@@ -19,7 +19,7 @@ const Featured = () => {
       setIndex(index !== 3 ? index + 1 : 0);
     }
   };
-  console.log(index);
+  // console.log(index);
   return (
     <div className={styles.container}>
       <div className={styles.arrowContainer} style={{ left: 0 }}>

@@ -2,11 +2,17 @@ import Image from "next/image";
 import styles from "../../styles/Product.module.css";
 import { useState } from "react";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { addProduct } from "../../redux/cartSlice";
 const Product = ({ pizza }) => {
   const [size, setSize] = useState(0);
   const [price, setPrice] = useState(pizza.prices[0]);
   const [quantity, setQuantity] = useState(1);
   const [extra, setExtra] = useState([]);
+ 
+  const cartData = useSelector((state) => state.cart);
+  // console.log("--------------Cart Data----------------", cartData);
+  const dispatch = useDispatch();
   const changePrice = (number) => {
     setPrice(price + number);
   };
@@ -25,6 +31,19 @@ const Product = ({ pizza }) => {
       setExtra(extra.filter((extra) => extra._id !== option._id));
     }
   };
+  const handleClick = () => {
+    dispatch(addProduct({ ...pizza, extra, price, quantity }));
+  };
+  function checkCart(id) {
+    let data = cartData.products.filter((prod) => {
+      return prod._id === id;
+    });
+    if (data) {
+      return true;
+    } else {
+      return false;
+    }
+  }
   // const pizza = {
   //   id: 1,
   //   img: "/images/pizza.png",
@@ -120,7 +139,10 @@ const Product = ({ pizza }) => {
               defaultValue={1}
               className={styles.quantity}
             />
-            <button className={styles.button}>Add To Cart</button>
+            {checkCart(pizza._id) ? "add to Cart" : "Go To Cart"}
+            <button className={styles.button} onClick={() => handleClick()}>
+              Add To Cart
+            </button>
           </div>
         </div>
       </div>

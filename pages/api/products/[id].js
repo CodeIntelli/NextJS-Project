@@ -8,7 +8,7 @@ export default async function handler(req, res) {
   dbConnect();
   if (method === "GET") {
     try {
-      console.log(id);
+      // console.log(id);
       const products = await productModel.findById(id);
       res.status(200).json({
         success: true,
